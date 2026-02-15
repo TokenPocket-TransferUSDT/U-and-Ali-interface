@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>支付/交易详情</title>
+    <title>支付成功</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -13,8 +13,8 @@
         }
         
         body {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
-            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #ffffff;
             min-height: 100vh;
             padding: 0;
             margin: 0;
@@ -22,22 +22,9 @@
             margin: 0 auto;
         }
         
-        .page {
-            display: none;
-        }
-        
-        .page.active {
-            display: block;
-        }
-        
-        /* ===== ALIPAY PAGE STYLES ===== */
-        .alipay-page {
-            background: #ffffff;
-        }
-        
         .header {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             padding: 2px 20px 0px 20px;
         }
@@ -143,6 +130,14 @@
             font-weight: 500;
         }
         
+        .detail-label.left {
+            text-align: left;
+        }
+        
+        .detail-label.right {
+            text-align: right;
+        }
+        
         .detail-value {
             color: #333333;
             font-size: 15px;
@@ -158,154 +153,7 @@
             line-height: 1;
             display: flex;
             align-items: center;
-        }
-        
-        /* ===== USDT PAGE STYLES ===== */
-        .usdt-page {
-            background: #f5f5f5;
-        }
-        
-        .usdt-page .header {
-            background: transparent;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: none;
-        }
-        
-        .back-btn {
-            font-size: 24px;
-            color: #000;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            width: 24px;
-            height: 24px;
-        }
-        
-        .header-title {
-            flex: 1;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .share-btn {
-            font-size: 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            width: 24px;
-            height: 24px;
-            color: #1890ff;
-        }
-        
-        .success-section {
-            background: transparent;
-            padding: 30px 20px 10px 20px;
-            text-align: center;
-            border-bottom: none;
-        }
-        
-        .success-icon.usdt {
-            width: 60px;
-            height: 60px;
-            background: #52c41a;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 32px;
-            color: white;
-        }
-        
-        .success-text.usdt {
-            font-size: 18px;
-            color: #52c41a;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        
-        .transaction-time {
-            font-size: 13px;
-            color: #999;
-        }
-        
-        .section-title {
-            font-size: 14px;
-            font-weight: 400;
-            color: #333;
-            padding: 16px 20px 8px 36px;
-            background: #f5f5f5;
-            margin: 0;
-        }
-        
-        .container {
-            background: #ffffff;
-            margin: 0 20px 12px 20px;
-            border-radius: 16px;
-            padding: 16px;
-        }
-        
-        .account-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: #f5f5f5;
-            border-radius: 32px;
-            margin-bottom: 6px;
-        }
-        
-        .account-icon {
-            width: 40px;
-            height: 40px;
-            background: transparent;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-        
-        .account-icon.from {
-            color: #52c41a;
-        }
-        
-        .account-icon.to {
-            color: #999;
-        }
-        
-        .account-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        
-        .account-info {
-            flex: 1;
-        }
-        
-        .account-label {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 2px;
-        }
-        
-        .account-address {
-            font-size: 14px;
-            color: #333;
-            font-weight: 600;
-            word-break: break-all;
-            font-family: 'Roboto', sans-serif;
-        }
-        
+        }        
         /* Modal Styles */
         .modal {
             display: none;
@@ -354,7 +202,6 @@
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
-            margin-bottom: 8px;
         }
         
         .button-group {
@@ -387,233 +234,82 @@
             background-color: #52c41a;
             color: white;
             margin-bottom: 10px;
-            width: 100%;
-        }
-        
-        .toggle-switch {
-            display: inline-block;
-            position: relative;
-            width: 50px;
-            height: 24px;
-            margin: 0 10px;
-        }
-        
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.3s;
-            border-radius: 24px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: 0.3s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: #52c41a;
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        
-        .switch-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 20px;
-            background: #fff;
-            margin: 0 20px 12px 20px;
-            border-radius: 8px;
-        }
-        
-        .switch-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: #333;
         }
     </style>
 </head>
 <body>
-    <!-- ===== ALIPAY PAGE ===== -->
-    <div id="alipayPage" class="page active alipay-page">
-        <!-- Header -->
-        <div class="header">
-            <button class="complete-btn" onclick="openAlipaySettings()">完成</button>
+    <!-- Header -->
+    <div class="header">
+        <button class="complete-btn">完成</button>
+    </div>
+    
+    <!-- Content -->
+    <div class="content" ondblclick="openSettingsModal()">
+        <!-- Success Icon -->
+        <div class="success-icon">
+            <img src="Alipay_logo_(2020).svg.png" alt="Alipay Logo">
         </div>
         
-        <!-- Content -->
-        <div class="content" ondblclick="openAlipaySettings()">
-            <!-- Success Icon -->
-            <div class="success-icon">
-                <img src="Alipay_logo_(2020).svg.png" alt="Alipay Logo">
-            </div>
-            
-            <!-- Success Text -->
-            <div class="success-text">支付成功</div>
-            
-            <!-- Amount -->
-            <div class="amount">
-                <span class="currency">¥</span>
-                <span class="amount-value" id="alipayAmount">100.00</span>
-            </div>
-            
-            <!-- Payment Details -->
-            <div class="payment-details">
-                <div class="detail-row">
-                    <span class="detail-label">付款方式</span>
-                    <span class="detail-label zhanghu-label">账户余额</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">收款方</span>
-                    <span class="detail-value">
-                        <span id="alipayName">Tian Tian (*琴宝儿)</span>
-                        <span class="arrow">›</span>
-                    </span>
-                </div>
-            </div>
+        <!-- Success Text -->
+        <div class="success-text">支付成功</div>
+        
+        <!-- Amount -->
+        <div class="amount">
+            <span class="currency">¥</span>
+            <span class="amount-value" id="displayAmount">100.00</span>
         </div>
         
-        <!-- Switch to USDT -->
-        <div class="switch-container">
-            <span class="switch-label">Alipay</span>
-            <label class="toggle-switch">
-                <input type="checkbox" onchange="togglePaymentMethod()">
-                <span class="slider"></span>
-            </label>
-            <span class="switch-label">USDT</span>
+        <!-- Payment Details -->
+        <div class="payment-details">
+            <div class="detail-row">
+                <span class="detail-label">付款方式</span>
+                <span class="detail-label zhanghu-label">账户余额</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">收款方</span>
+                <span class="detail-value">
+                    <span id="displayName">Tian Tian (*琴宝儿)</span>
+                    <span class="arrow">›</span>
+                </span>
+            </div>
         </div>
     </div>
     
-    <!-- ===== USDT PAGE ===== -->
-    <div id="usdtPage" class="page usdt-page">
-        <!-- Header -->
-        <div class="header">
-            <button class="back-btn">‹</button>
-            <div class="header-title">交易详情</div>
-            <button class="share-btn"><img src="sharebutton.jpg" alt="Share" style="width: 18px; height: 18px;"></button>
-        </div>
-        
-        <!-- Success Section -->
-        <div class="success-section" ondblclick="openUsdtSettings()">
-            <div class="success-icon usdt">✓</div>
-            <div class="success-text usdt">成功</div>
-            <div class="transaction-time" id="transactionTime">2026年2月15日晚上7点52分</div>
-        </div>
-        
-        <!-- Overview Section -->
-        <div class="section-title" ondblclick="openUsdtSettings()">概览</div>
-        <div class="container" ondblclick="openUsdtSettings()">
-            <div class="account-card">
-                <div class="account-icon from"><img src="greenicon.png" alt="User"></div>
-                <div class="account-info">
-                    <div class="account-address" style="font-weight: 400;">Account 05</div>
-                    <div class="account-address" style="font-weight: 600; color: #000;" id="usdtAddress1">TGjgVNapDCux.........E3ghPKvqdmtw2</div>
-                </div>
-            </div>
-            
-            <div class="detail-row" style="margin: -7px 0; border-bottom: none;">
-                <span class="detail-label" style="color: #000;">发送 <span style="color: #666;" id="usdtAmount">105 USDT</span></span>
-            </div>
-            
-            <div style="margin-bottom: 0; display: flex; gap: 8px; align-items: center;">
-                <span style="color: #000; font-size: 16px; font-weight: bold; margin-right: 16px;">到</span>
-                <div class="account-card" style="margin-bottom: 0; flex: 1;">
-                    <div class="account-icon to"><img src="greyicon.png" alt="User"></div>
-                    <div class="account-info">
-                        <div class="account-label" style="color: #999; font-size: 12px;">-</div>
-                        <div class="account-address" style="font-weight: 600; color: #000;" id="usdtAddress2">TXdFseTQAX...q9jxC6Ca</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Switch to Alipay -->
-        <div class="switch-container">
-            <span class="switch-label">Alipay</span>
-            <label class="toggle-switch">
-                <input type="checkbox" checked onchange="togglePaymentMethod()">
-                <span class="slider"></span>
-            </label>
-            <span class="switch-label">USDT</span>
-        </div>
-    </div>
-    
-    <!-- ===== ALIPAY SETTINGS MODAL ===== -->
-    <div id="alipayModal" class="modal">
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">编辑支付信息</div>
             
             <div class="form-group">
                 <label>金额</label>
-                <input type="text" id="alipayAmountInput" placeholder="输入金额">
+                <input type="text" id="amountInput" placeholder="输入金额">
             </div>
             
             <div class="form-group">
                 <label>收款人名字</label>
-                <input type="text" id="alipayNameInput" placeholder="输入名字">
+                <input type="text" id="nameInput" placeholder="输入名字">
             </div>
             
             <button class="btn btn-random" onclick="setRandomChineseName()">随机中文名称</button>
             
-            <div class="button-group">
-                <button class="btn btn-primary" onclick="saveAlipaySettings()">保存</button>
-                <button class="btn btn-secondary" onclick="closeAlipaySettings()">取消</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- ===== USDT SETTINGS MODAL ===== -->
-    <div id="usdtModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">编辑交易信息</div>
-            
-            <div class="form-group">
-                <label>金额</label>
-                <input type="text" id="usdtAmountInput" placeholder="输入金额">
-            </div>
-            
-            <div class="form-group">
-                <label>发送地址</label>
-                <input type="text" id="usdtAddress1Input" placeholder="输入地址">
-                <button class="btn btn-random" onclick="generateRandomTronAddress('usdtAddress1Input')">随机地址</button>
-            </div>
-            
-            <div class="form-group">
-                <label>接收地址</label>
-                <input type="text" id="usdtAddress2Input" placeholder="输入地址">
-                <button class="btn btn-random" onclick="generateRandomTronAddress('usdtAddress2Input')">随机地址</button>
+            <div style="border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; padding: 12px 0; margin: 12px 0;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; justify-content: center;">
+                    <input type="checkbox" onchange="switchToUSDT()" style="width: 40px; height: 20px; cursor: pointer;">
+                    <span style="font-size: 14px; color: #333;">切换到 USDT</span>
+                </label>
             </div>
             
             <div class="button-group">
-                <button class="btn btn-primary" onclick="saveUsdtSettings()">保存</button>
-                <button class="btn btn-secondary" onclick="closeUsdtSettings()">取消</button>
+                <button class="btn btn-primary" onclick="saveSettings()">保存</button>
+                <button class="btn btn-secondary" onclick="closeSettingsModal()">取消</button>
             </div>
         </div>
     </div>
 
     <script>
-        // ===== ALIPAY FUNCTIONS =====
+        // Chinese names database (3 and 4 letter names)
         const chineseNames = [
+            // 3-letter names
             '李明', '王芳', '张伟', '刘娜', '陈强', '蒋红', '吴俊', '郑秀',
             '朱峰', '谢燕', '韩超', '冯丽', '曾军', '罗磊', '许静', '肖芹',
             '周建', '姜琴', '黄颂', '何勤', '邓慧', '曲芬', '谭雨', '庞菊',
@@ -621,120 +317,56 @@
             '钱伟', '孙燕', '赵敏', '吕军', '郭健', '何冬', '薛娅', '龚芳',
             '鲜昌', '穆超', '蔡静', '卢欣', '蒙叶', '辛军', '娄聪', '管彩',
             '汪潮', '闵超', '舒明', '终惠', '饶军', '巫欣', '缪智', '臧彦',
+            // 4-letter names
             '李明轩', '王芳芸', '张伟鹏', '刘娜雪', '陈强武', '蒋红艳', '吴俊杰', '郑秀兰',
             '朱峰磊', '谢燕飞', '韩超越', '冯丽华', '曾军彬', '罗磊鹏', '许静茵', '肖芹陌',
             '周建宏', '姜琴音', '黄颂歌', '何勤奋', '邓慧灵', '曲芬芬', '谭雨柔', '庞菊花',
             '宁萌草', '顾岚风', '任晓雨', '杨梅香', '包军锋', '樊奎杰', '贡芸姿', '刀思远'
         ];
         
-        function openAlipaySettings() {
-            const modal = document.getElementById('alipayModal');
-            document.getElementById('alipayAmountInput').value = document.getElementById('alipayAmount').textContent;
-            document.getElementById('alipayNameInput').value = document.getElementById('alipayName').textContent;
+        function openSettingsModal() {
+            const modal = document.getElementById('settingsModal');
+            const currentAmount = document.getElementById('displayAmount').textContent;
+            const currentName = document.getElementById('displayName').textContent;
+            
+            document.getElementById('amountInput').value = currentAmount;
+            document.getElementById('nameInput').value = currentName;
+            
             modal.style.display = 'block';
         }
         
-        function closeAlipaySettings() {
-            document.getElementById('alipayModal').style.display = 'none';
+        function closeSettingsModal() {
+            const modal = document.getElementById('settingsModal');
+            modal.style.display = 'none';
         }
         
-        function saveAlipaySettings() {
-            const amount = document.getElementById('alipayAmountInput').value;
-            const name = document.getElementById('alipayNameInput').value;
+        function switchToUSDT() {
+            window.location.href = 'index2.html';
+        }
+        
+        function setRandomChineseName() {
+            const randomName = chineseNames[Math.floor(Math.random() * chineseNames.length)];
+            document.getElementById('nameInput').value = randomName;
+        }
+        
+        function saveSettings() {
+            const amount = document.getElementById('amountInput').value;
+            const name = document.getElementById('nameInput').value;
             
             if (amount && name) {
-                document.getElementById('alipayAmount').textContent = amount;
-                document.getElementById('alipayName').textContent = name;
-                closeAlipaySettings();
+                document.getElementById('displayAmount').textContent = amount;
+                document.getElementById('displayName').textContent = name;
+                closeSettingsModal();
             } else {
                 alert('请输入金额和名字');
             }
         }
         
-        function setRandomChineseName() {
-            const randomName = chineseNames[Math.floor(Math.random() * chineseNames.length)];
-            document.getElementById('alipayNameInput').value = randomName;
-        }
-        
-        // ===== USDT FUNCTIONS =====
-        function updateTransactionTime() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth() + 1;
-            const day = now.getDate();
-            const hours = now.getHours();
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            
-            let timeOfDay = '';
-            if (hours < 6) timeOfDay = '凌晨';
-            else if (hours < 12) timeOfDay = '上午';
-            else if (hours < 18) timeOfDay = '下午';
-            else timeOfDay = '晚上';
-            
-            const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
-            
-            document.getElementById('transactionTime').textContent = 
-                `${year}年${month}月${day}日${timeOfDay}${displayHours}点${minutes}分`;
-        }
-        
-        updateTransactionTime();
-        setInterval(updateTransactionTime, 60000);
-        
-        function generateRandomTronAddress(inputId) {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
-            let address = 'T';
-            for (let i = 0; i < 33; i++) {
-                address += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            document.getElementById(inputId).value = address;
-        }
-        
-        function openUsdtSettings() {
-            const modal = document.getElementById('usdtModal');
-            document.getElementById('usdtAmountInput').value = document.getElementById('usdtAmount').textContent;
-            document.getElementById('usdtAddress1Input').value = document.getElementById('usdtAddress1').textContent;
-            document.getElementById('usdtAddress2Input').value = document.getElementById('usdtAddress2').textContent;
-            modal.style.display = 'block';
-        }
-        
-        function closeUsdtSettings() {
-            document.getElementById('usdtModal').style.display = 'none';
-        }
-        
-        function saveUsdtSettings() {
-            const amount = document.getElementById('usdtAmountInput').value;
-            const address1 = document.getElementById('usdtAddress1Input').value;
-            const address2 = document.getElementById('usdtAddress2Input').value;
-            
-            if (amount && address1 && address2) {
-                document.getElementById('usdtAmount').textContent = amount;
-                document.getElementById('usdtAddress1').textContent = address1;
-                document.getElementById('usdtAddress2').textContent = address2;
-                closeUsdtSettings();
-            } else {
-                alert('请输入所有字段');
-            }
-        }
-        
-        // ===== TOGGLE BETWEEN PAGES =====
-        function togglePaymentMethod() {
-            const alipayPage = document.getElementById('alipayPage');
-            const usdtPage = document.getElementById('usdtPage');
-            
-            alipayPage.classList.toggle('active');
-            usdtPage.classList.toggle('active');
-        }
-        
-        // Close modals when clicking outside
+        // Close modal when clicking outside of it
         window.onclick = function(event) {
-            const alipayModal = document.getElementById('alipayModal');
-            const usdtModal = document.getElementById('usdtModal');
-            
-            if (event.target === alipayModal) {
-                closeAlipaySettings();
-            }
-            if (event.target === usdtModal) {
-                closeUsdtSettings();
+            const modal = document.getElementById('settingsModal');
+            if (event.target === modal) {
+                closeSettingsModal();
             }
         }
     </script>
