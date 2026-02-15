@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交易详情</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            background: transparent;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: none;
+        }
+        
+        .back-btn {
+            font-size: 24px;
+            color: #000;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .header-title {
+            flex: 1;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .share-btn {
+            font-size: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            color: #1890ff;
+        }
+        
+        /* Success Section */
+        .success-section {
+            background: transparent;
+            padding: 30px 20px 10px 20px;
+            text-align: center;
+            border-bottom: none;
+        }
+        
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background: #52c41a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 32px;
+            color: white;
+        }
+        
+        .success-text {
+            font-size: 18px;
+            color: #52c41a;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .transaction-time {
+            font-size: 13px;
+            color: #999;
+        }
+        
+        /* Section Title */
+        .section-title {
+            font-size: 14px;
+            font-weight: 400;
+            color: #333;
+            padding: 16px 20px 8px 36px;
+            background: #f5f5f5;
+            margin: 0;
+        }
+        
+        /* Card Container */
+        .container {
+            background: #ffffff;
+            margin: 0 20px 12px 20px;
+            border-radius: 16px;
+            padding: 16px;
+        }
+        
+        /* Account Info Card */
+        .account-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 32px;
+            margin-bottom: 6px;
+        }
+        
+        .account-card:last-child {
+            margin-bottom: 0;
+        }
+        
+        .account-icon {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        
+        .account-icon.from {
+            color: #52c41a;
+        }
+        
+        .account-icon.to {
+            color: #999;
+        }
+        
+        .account-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .account-info {
+            flex: 1;
+        }
+        
+        .account-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 2px;
+        }
+        
+        .account-address {
+            font-size: 14px;
+            color: #333;
+            font-weight: 600;
+            word-break: break-all;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .account-name {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+        
+        /* Amount Section */
+        .amount-section {
+            text-align: center;
+            padding: 12px;
+            margin: 12px 0;
+        }
+        
+        .amount-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+        
+        .amount-value {
+            font-size: 18px;
+            color: #333;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* Transfer Details */
+        .transfer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .transfer-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .transfer-from {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .transfer-icon {
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .transfer-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .transfer-info {
+            flex: 1;
+        }
+        
+        .transfer-address {
+            font-size: 13px;
+            color: #333;
+            font-weight: 500;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .transfer-amount {
+            font-size: 14px;
+            font-weight: 600;
+            min-width: 60px;
+            text-align: right;
+        }
+        
+        .transfer-amount.out {
+            color: #000;
+        }
+        
+        .transfer-amount.in {
+            color: #52c41a;
+        }
+        
+        /* Detail Row */
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #000;
+            font-size: 16px;
+            flex: 0 0 auto;
+            font-weight: bold;
+        }
+        
+        .detail-value {
+            color: #333;
+            font-size: 13px;
+            text-align: right;
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 6px;
+            word-break: break-all;
+        }
+        
+        .network-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fee8e8;
+            color: #ff4d4f;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .network-icon {
+            font-size: 16px;
+        }
+        
+        .copy-icon {
+            font-size: 12px;
+            cursor: pointer;
+            color: #1890ff;
+        }
+        
+        .copy-icon:hover {
+            color: #40a9ff;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 8px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: #1890ff;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-random {
+            background-color: #52c41a;
+            color: white;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn">‹</button>
+        <div class="header-title">交易详情</div>
+        <button class="share-btn"><img src="sharebutton.jpg" alt="Share" style="width: 18px; height: 18px;"></button>
+    </div>
+    
+    <!-- Success Section -->
+    <div class="success-section" ondblclick="openEditModal()">
+        <div class="success-icon">✓</div>
+        <div class="success-text">成功</div>
+        <div class="transaction-time" id="transactionTime">2026年2月15日晚上7点52分</div>
+    </div>
+    
+    <!-- Overview Section -->
+    <div class="section-title" ondblclick="openEditModal()">概览</div>
+    <div class="container" ondblclick="openEditModal()">
+        <div class="account-card">
+            <div class="account-icon from"><img src="greenicon.png" alt="User"></div>
+            <div class="account-info">
+                <div class="account-address" style="font-weight: 400;">Account 05</div>
+                    <div class="account-address" style="font-weight: 600; color: #000;" id="editableAddress1">TGjgVNapDCux.........E3ghPKvqdmtw2</div>
+            </div>
+        </div>
+        
+        <div class="detail-row" style="margin: -7px 0; border-bottom: none;">
+            <span class="detail-label" style="color: #000;">发送 <span style="color: #666;" id="editableAmount">105 USDT</span></span>
+        </div>
+        
+        <div style="margin-bottom: 0; display: flex; gap: 8px; align-items: center;">
+            <span style="color: #000; font-size: 16px; font-weight: bold; margin-right: 16px;">到</span>
+            <div class="account-card" style="margin-bottom: 0; flex: 1;">
+                <div class="account-icon to"><img src="greyicon.png" alt="User"></div>
+                <div class="account-info">
+                    <div class="account-label" style="color: #999; font-size: 12px;">-</div>
+                    <div class="account-address" style="font-weight: 600; color: #000;" id="editableAddress2">TXdFseTQAX...q9jxC6Ca</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Token Transfer Section -->
+    <div class="section-title">代币转移</div>
+    <div class="container">
+        <div style="display: flex; gap: 12px; align-items: flex-end; margin-bottom: 20px;">
+            <div style="flex: 1;">
+                <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 8px; gap: 3px;">
+                    <div style="font-size: 13px; color: #000; font-weight: 600;">TR7tMD9n6P...RWQeKdEr</div>
+                    <div style="font-size: 13px; color: #999; font-weight: 400;">Account 05</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="5.png" alt="USDT" style="width: 18px; height: 18px;">
+                    <span style="font-size: 13px; color: #333;">USDT</span>
+                </div>
+            </div>
+            <div id="transferOutAmount" style="font-size: 14px; color: #000; font-weight: 600; white-space: nowrap; padding-bottom: 4px;">-105</div>
+        </div>
+        
+        <div style="border-bottom: 1px solid #f0f0f0; margin: 10px 0;"></div>
+        
+        <div style="display: flex; gap: 12px; align-items: flex-end;">
+            <div style="flex: 1;">
+                <div style="font-size: 13px; color: #000; margin-bottom: 8px; font-weight: 600;">TXdFseTQAX...q9jxC6Ca</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="5.png" alt="USDT" style="width: 18px; height: 18px;">
+                    <span style="font-size: 13px; color: #333;">USDT</span>
+                </div>
+            </div>
+            <div id="transferInAmount" style="font-size: 14px; color: #52c41a; font-weight: 600; white-space: nowrap; padding-bottom: 4px;">+105</div>
+        </div>
+    </div>
+    
+    <!-- Transaction Details Section -->
+    <div class="section-title">交易详情</div>
+    <div class="container">
+        <div class="detail-row">
+            <span class="detail-label">网络</span>
+            <span class="detail-value" style="justify-content: flex-start; align-items: center;">
+                <span style="display: flex; align-items: center; gap: 8px; margin-left: 45px;">
+                    <img src="tronfull.png" alt="Tron" style="width: 20px; height: 20px;">
+                    <span style="color: #333;">Tron</span>
+                </span>
+            </span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">发起人</span>
+            <span class="detail-value" style="justify-content: flex-start; align-items: center;">
+                <span style="color: #333; font-size: 13px; font-family: 'Roboto', sans-serif; margin-left: 30px;">TR7tMD9n6PND5ePdHsSn fLYKerRWQ eKdEr</span>
+                <button class="copy-btn" onclick="copyAddress('TR7tMD9n6PND5ePdHsSn fLYKerRWQ eKdEr')" style="background: none; border: none; cursor: pointer; padding: 0 8px; margin-top: -8px;"><img src="copyicon.png" alt="Copy" style="width: 20px; height: 20px;"></button>
+            </span>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">编辑交易信息</div>
+            
+            <div class="form-group">
+                <label>金额</label>
+                <input type="text" id="amountInput" placeholder="输入金额">
+            </div>
+            
+            <div class="form-group">
+                <label>发送地址</label>
+                <input type="text" id="address1Input" placeholder="输入地址">
+                <button class="btn btn-random" onclick="generateRandomTronAddress('address1Input')">随机地址</button>
+            </div>
+            
+            <div class="form-group">
+                <label>接收地址</label>
+                <input type="text" id="address2Input" placeholder="输入地址">
+                <button class="btn btn-random" onclick="generateRandomTronAddress('address2Input')">随机地址</button>
+            </div>
+            
+            <div style="border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; padding: 12px 0; margin: 12px 0;">
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; justify-content: center;">
+                    <input type="checkbox" onchange="switchToAlipay()" style="width: 40px; height: 20px; cursor: pointer;">
+                    <span style="font-size: 14px; color: #333;">切换到 支付宝</span>
+                </label>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="saveEditChanges()">保存</button>
+                <button class="btn btn-secondary" onclick="closeEditModal()">取消</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Update transaction time in real-time
+        function updateTransactionTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            const hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            
+            let timeOfDay = '';
+            if (hours < 6) {
+                timeOfDay = '凌晨';
+            } else if (hours < 12) {
+                timeOfDay = '上午';
+            } else if (hours < 18) {
+                timeOfDay = '下午';
+            } else {
+                timeOfDay = '晚上';
+            }
+            
+            const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+            
+            document.getElementById('transactionTime').textContent = 
+                `${year}年${month}月${day}日${timeOfDay}${displayHours}点${minutes}分`;
+        }
+        
+        // Update time every minute
+        updateTransactionTime();
+        setInterval(updateTransactionTime, 60000);
+        
+        // Generate random TRON address
+        function generateRandomTronAddress(inputId) {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+            let address = 'T';
+            for (let i = 0; i < 33; i++) {
+                address += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById(inputId).value = address;
+        }
+        
+        // Open edit modal
+        function openEditModal() {
+            const modal = document.getElementById('editModal');
+            const amount = document.getElementById('editableAmount').textContent;
+            const address1 = document.getElementById('editableAddress1').textContent;
+            const address2 = document.getElementById('editableAddress2').textContent;
+            
+            document.getElementById('amountInput').value = amount;
+            document.getElementById('address1Input').value = address1;
+            document.getElementById('address2Input').value = address2;
+            
+            modal.style.display = 'block';
+        }
+        
+        // Close edit modal
+        function closeEditModal() {
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'none';
+        }
+        
+        function switchToAlipay() {
+            window.location.href = 'index.html';
+        }
+        
+        // Save edit changes
+        function saveEditChanges() {
+            const amount = document.getElementById('amountInput').value;
+            const address1 = document.getElementById('address1Input').value;
+            const address2 = document.getElementById('address2Input').value;
+            
+            if (amount && address1 && address2) {
+                document.getElementById('editableAmount').textContent = amount;
+                document.getElementById('editableAddress1').textContent = address1;
+                document.getElementById('editableAddress2').textContent = address2;
+                
+                // Extract just the number from the amount (e.g., "105 USDT" -> "105")
+                const amountNumber = amount.split(' ')[0];
+                document.getElementById('transferOutAmount').textContent = '-' + amountNumber;
+                document.getElementById('transferInAmount').textContent = '+' + amountNumber;
+                
+                closeEditModal();
+            } else {
+                alert('请输入所有字段');
+            }
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        }
+        
+        // Copy address function
+        function copyAddress(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            });
+        }
+        
+        // Back button
+        document.querySelector('.back-btn').addEventListener('click', function() {
+            window.history.back();
+        });
+        
+        // Share button
+        document.querySelector('.share-btn').addEventListener('click', function() {
+            alert('Share functionality would go here');
+        });
+        
+        // Copy icon functionality
+        document.querySelectorAll('.copy-icon').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const text = this.previousElementSibling.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Copied to clipboard!');
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
