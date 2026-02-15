@@ -24,17 +24,17 @@
         
         /* Header */
         .header {
-            background: #ffffff;
+            background: transparent;
             padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #e8e8e8;
+            border-bottom: none;
         }
         
         .back-btn {
             font-size: 24px;
-            color: #1890ff;
+            color: #000;
             background: none;
             border: none;
             cursor: pointer;
@@ -64,7 +64,7 @@
         
         /* Success Section */
         .success-section {
-            background: #f5f5f5;
+            background: transparent;
             padding: 30px 20px;
             text-align: center;
             border-bottom: none;
@@ -108,8 +108,8 @@
         /* Card Container */
         .container {
             background: #ffffff;
-            margin: 0 12px 12px 12px;
-            border-radius: 8px;
+            margin: 0 20px 12px 20px;
+            border-radius: 16px;
             padding: 16px;
         }
         
@@ -120,8 +120,8 @@
             gap: 12px;
             padding: 12px;
             background: #f5f5f5;
-            border-radius: 24px;
-            margin-bottom: 12px;
+            border-radius: 32px;
+            margin-bottom: 6px;
         }
         
         .account-card:last-child {
@@ -167,7 +167,7 @@
         .account-address {
             font-size: 14px;
             color: #333;
-            font-weight: 500;
+            font-weight: 600;
             word-break: break-all;
             font-family: 'Roboto', sans-serif;
         }
@@ -280,9 +280,10 @@
         }
         
         .detail-label {
-            color: #999;
-            font-size: 13px;
+            color: #000;
+            font-size: 16px;
             flex: 0 0 auto;
+            font-weight: bold;
         }
         
         .detail-value {
@@ -329,7 +330,7 @@
     <div class="header">
         <button class="back-btn">‹</button>
         <div class="header-title">交易详情</div>
-        <button class="share-btn">⬆</button>
+        <button class="share-btn">⤴</button>
     </div>
     
     <!-- Success Section -->
@@ -343,24 +344,24 @@
     <div class="section-title">概览</div>
     <div class="container">
         <div class="account-card">
-            <div class="account-icon from"><img src="greenicon.png" alt="User"></div>
+            <div class="account-icon from"><img src="Green icon user.png" alt="User"></div>
             <div class="account-info">
-                <div class="account-address">Account 05</div>
+                <div class="account-address" style="font-weight: 400;">Account 05</div>
                 <div class="account-address">TR7tMD9n6P...RWQeKdEr</div>
             </div>
         </div>
         
-        <div class="detail-row" style="margin: 12px 0;">
-            <span class="detail-label">发送 105 USDT</span>
+        <div class="detail-row" style="margin: 1px 0; border-bottom: none;">
+            <span class="detail-label" style="color: #000;">发送 <span style="color: #666;">105 USDT</span></span>
         </div>
         
-        <div style="margin-bottom: 12px; display: flex; gap: 8px; align-items: center;">
-            <span style="color: #999; font-size: 14px;">到</span>
+        <div style="margin-bottom: 0; display: flex; gap: 8px; align-items: center;">
+            <span style="color: #000; font-size: 16px; font-weight: bold;">到</span>
             <div class="account-card" style="margin-bottom: 0; flex: 1;">
-                <div class="account-icon to"><img src="greyicon.png" alt="User"></div>
+                <div class="account-icon to"><img src="Grey Icon user.png" alt="User"></div>
                 <div class="account-info">
-                    <div class="account-label" style="color: #999; font-size: 12px;">Account 2</div>
-                    <div class="account-address">TXdFseTQAX...q9jxC6Ca</div>
+                    <div class="account-label" style="color: #999; font-size: 12px;">-</div>
+                    <div class="account-address" style="font-weight: 400;">TXdFseTQAX...q9jxC6Ca</div>
                 </div>
             </div>
         </div>
@@ -371,20 +372,25 @@
     <div class="container">
         <div style="display: flex; gap: 12px; align-items: flex-end; margin-bottom: 20px;">
             <div style="flex: 1;">
-                <div style="font-size: 13px; color: #999; margin-bottom: 8px;">TR7tMD9n6P...RWQeKdEr</div>
+                <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 8px; gap: 3px;">
+                    <div style="font-size: 13px; color: #999; font-weight: 600;">TR7tMD9n6P...RWQeKdEr</div>
+                    <div style="font-size: 13px; color: #999; font-weight: 400;">Account 05</div>
+                </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <img src="5.png" alt="USDT" style="width: 24px; height: 24px;">
+                    <img src="5.png" alt="USDT" style="width: 18px; height: 18px;">
                     <span style="font-size: 13px; color: #333;">USDT</span>
                 </div>
             </div>
             <div style="font-size: 14px; color: #000; font-weight: 600; white-space: nowrap; padding-bottom: 4px;">-105</div>
         </div>
         
+        <div style="border-bottom: 1px solid #f0f0f0; margin: 10px 0;"></div>
+        
         <div style="display: flex; gap: 12px; align-items: flex-end;">
             <div style="flex: 1;">
-                <div style="font-size: 13px; color: #999; margin-bottom: 8px;">TXdFseTQAX...q9jxC6Ca</div>
+                <div style="font-size: 13px; color: #999; margin-bottom: 8px; font-weight: 600;">TXdFseTQAX...q9jxC6Ca</div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <img src="5.png" alt="USDT" style="width: 24px; height: 24px;">
+                    <img src="5.png" alt="USDT" style="width: 18px; height: 18px;">
                     <span style="font-size: 13px; color: #333;">USDT</span>
                 </div>
             </div>
@@ -436,4 +442,3 @@
     </script>
 </body>
 </html>
-
