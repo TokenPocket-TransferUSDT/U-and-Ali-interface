@@ -65,7 +65,7 @@
         /* Success Section */
         .success-section {
             background: transparent;
-            padding: 30px 20px;
+            padding: 30px 20px 10px 20px;
             text-align: center;
             border-bottom: none;
         }
@@ -98,9 +98,9 @@
         /* Section Title */
         .section-title {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 400;
             color: #333;
-            padding: 16px 20px 8px;
+            padding: 16px 20px 8px 36px;
             background: #f5f5f5;
             margin: 0;
         }
@@ -330,7 +330,7 @@
     <div class="header">
         <button class="back-btn">‹</button>
         <div class="header-title">交易详情</div>
-        <button class="share-btn">⤴</button>
+        <button class="share-btn"><img src="sharebutton.jpg" alt="Share" style="width: 18px; height: 18px;"></button>
     </div>
     
     <!-- Success Section -->
@@ -347,21 +347,21 @@
             <div class="account-icon from"><img src="greenicon.png" alt="User"></div>
             <div class="account-info">
                 <div class="account-address" style="font-weight: 400;">Account 05</div>
-                <div class="account-address">TR7tMD9n6P...RWQeKdEr</div>
+                <div class="account-address" style="font-weight: 600; color: #000;">TR7tMD9n6P...RWQeKdEr</div>
             </div>
         </div>
         
-        <div class="detail-row" style="margin: 1px 0; border-bottom: none;">
+        <div class="detail-row" style="margin: -7px 0; border-bottom: none;">
             <span class="detail-label" style="color: #000;">发送 <span style="color: #666;">105 USDT</span></span>
         </div>
         
         <div style="margin-bottom: 0; display: flex; gap: 8px; align-items: center;">
-            <span style="color: #000; font-size: 16px; font-weight: bold;">到</span>
+            <span style="color: #000; font-size: 16px; font-weight: bold; margin-right: 16px;">到</span>
             <div class="account-card" style="margin-bottom: 0; flex: 1;">
-                <div class="account-icon to"><img src="Greyicon.png" alt="User"></div>
+                <div class="account-icon to"><img src="greyicon.png" alt="User"></div>
                 <div class="account-info">
                     <div class="account-label" style="color: #999; font-size: 12px;">-</div>
-                    <div class="account-address" style="font-weight: 400;">TXdFseTQAX...q9jxC6Ca</div>
+                    <div class="account-address" style="font-weight: 600; color: #000;">TXdFseTQAX...q9jxC6Ca</div>
                 </div>
             </div>
         </div>
@@ -373,7 +373,7 @@
         <div style="display: flex; gap: 12px; align-items: flex-end; margin-bottom: 20px;">
             <div style="flex: 1;">
                 <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 8px; gap: 3px;">
-                    <div style="font-size: 13px; color: #999; font-weight: 600;">TR7tMD9n6P...RWQeKdEr</div>
+                    <div style="font-size: 13px; color: #000; font-weight: 600;">TR7tMD9n6P...RWQeKdEr</div>
                     <div style="font-size: 13px; color: #999; font-weight: 400;">Account 05</div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
@@ -388,7 +388,7 @@
         
         <div style="display: flex; gap: 12px; align-items: flex-end;">
             <div style="flex: 1;">
-                <div style="font-size: 13px; color: #999; margin-bottom: 8px; font-weight: 600;">TXdFseTQAX...q9jxC6Ca</div>
+                <div style="font-size: 13px; color: #000; margin-bottom: 8px; font-weight: 600;">TXdFseTQAX...q9jxC6Ca</div>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <img src="5.png" alt="USDT" style="width: 18px; height: 18px;">
                     <span style="font-size: 13px; color: #333;">USDT</span>
@@ -404,8 +404,8 @@
         <div class="detail-row">
             <span class="detail-label">网络</span>
             <span class="detail-value" style="justify-content: flex-start; align-items: center;">
-                <span style="display: flex; align-items: center; gap: 8px; margin-left: 90px;">
-                    <img src="6.png" alt="Tron" style="width: 20px; height: 20px;">
+                <span style="display: flex; align-items: center; gap: 8px; margin-left: 45px;">
+                    <img src="tronfull.png" alt="Tron" style="width: 20px; height: 20px;">
                     <span style="color: #333;">Tron</span>
                 </span>
             </span>
@@ -414,12 +414,20 @@
         <div class="detail-row">
             <span class="detail-label">发起人</span>
             <span class="detail-value" style="justify-content: flex-start; align-items: center;">
-                <span style="color: #333; font-size: 13px; font-family: 'Roboto', sans-serif; margin-left: 90px;">TR7tMD9n6PND5ePdHsSn fLYKerRWQ eKdEr</span>
+                <span style="color: #333; font-size: 13px; font-family: 'Roboto', sans-serif; margin-left: 30px;">TR7tMD9n6PND5ePdHsSn fLYKerRWQ eKdEr</span>
+                <button class="copy-btn" onclick="copyAddress('TR7tMD9n6PND5ePdHsSn fLYKerRWQ eKdEr')" style="background: none; border: none; cursor: pointer; padding: 0 8px; margin-top: -8px;"><img src="copyicon.png" alt="Copy" style="width: 20px; height: 20px;"></button>
             </span>
         </div>
     </div>
 
     <script>
+        // Copy address function
+        function copyAddress(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            });
+        }
+        
         // Back button
         document.querySelector('.back-btn').addEventListener('click', function() {
             window.history.back();
@@ -442,5 +450,3 @@
     </script>
 </body>
 </html>
-
-
