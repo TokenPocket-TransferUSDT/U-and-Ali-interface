@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付成功</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 2px 20px 0px 20px;
+        }
+        
+        .complete-btn {
+            color: #1890ff;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4px 20px 40px 20px;
+        }
+        
+        .success-icon {
+            width: 36px;
+            height: 36px;
+            background: #1890ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+            overflow: hidden;
+        }
+        
+        .success-text {
+            color: #1890ff;
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .amount {
+            display: flex;
+            align-items: baseline;
+            gap: 2px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-details {
+            width: 100%;
+            padding: 0;
+            border-bottom: 0.5px solid #e8e8e8;
+            padding-bottom: 8px;
+        }
+        
+        .success-icon img {
+            width: 98%;
+            height: 98%;
+            object-fit: contain;
+        }
+        
+        .currency {
+            font-size: 17px;
+            color: #000;
+            font-weight: 600;
+        }
+        
+        .amount-value {
+            font-size: 33px;
+            color: #000;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+            letter-spacing: -1px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            padding: 0;
+            width: 100%;
+        }
+        
+        .detail-row .detail-label:first-child {
+            margin-left: 0px;
+        }
+        
+        .detail-row .detail-value {
+            margin-right: 0px;
+        }
+        
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .detail-label {
+            color: #999999;
+            font-size: 15px;
+            flex: 0 0 auto;
+            font-weight: 400;
+        }
+        
+        .detail-label.zhanghu-label {
+            font-weight: 500;
+        }
+        
+        .detail-label.left {
+            text-align: left;
+        }
+        
+        .detail-label.right {
+            text-align: right;
+        }
+        
+        .detail-value {
+            color: #333333;
+            font-size: 15px;
+            font-weight: 450;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .arrow {
+            color: #cccccc;
+            font-size: 20px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            display: flex;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fafafa;
+            margin-bottom: 0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 16px;
+            text-align: center;
+            cursor: pointer;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #1890ff;
+            border-bottom-color: #1890ff;
+            background: #fff;
+        }
+
+        .tab:hover {
+            background: #f5f5f5;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .tab-content.active {
+            display: block !important;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: #1890ff;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-random {
+            background-color: #52c41a;
+            color: white;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .btn-random:hover {
+            background-color: #73d13d;
+        }
+
+        /* Name combo box */
+        .name-combo-wrapper {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .name-combo-wrapper input {
+            flex: 1;
+            padding: 8px 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .name-combo-wrapper input:focus {
+            outline: none;
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+        }
+
+        .dropdown-toggle-btn {
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.3s ease;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dropdown-toggle-btn:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+
+        .name-select-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 5px;
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            z-index: 1001;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item {
+            padding: 12px 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: #333;
+            transition: background 0.2s ease;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: #e6f7ff;
+            color: #1890ff;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="complete-btn">完成</button>
+    </div>
+    
+    <!-- Content -->
+    <div class="content" ondblclick="openSettingsModal()">
+        <!-- Success Icon -->
+        <div class="success-icon">
+            <img src="Alipay_logo_(2020).svg.png" alt="Alipay Logo">
+        </div>
+        
+        <!-- Success Text -->
+        <div class="success-text">支付成功</div>
+        
+        <!-- Amount -->
+        <div class="amount">
+            <span class="currency">¥</span>
+            <span class="amount-value" id="displayAmount">100.00</span>
+        </div>
+        
+        <!-- Payment Details -->
+        <div class="payment-details">
+            <div class="detail-row">
+                <span class="detail-label">付款方式</span>
+                <span class="detail-label zhanghu-label">账户余额</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">收款方</span>
+                <span class="detail-value">
+                    <span id="displayName">Tian Tian (*琴宝儿)</span>
+                    <span class="arrow">›</span>
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Configuration Modal -->
+    <div id="configModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Payment Interface Configuration</div>
+            
+            <div class="tabs-container">
+                <div class="tab" onclick="switchTab('alipay-blue')">AlipayBlue</div>
+                <div class="tab" onclick="switchTab('imtoken')">Imtoken</div>
+                <div class="tab active" onclick="switchTab('alipay-w')">AlipayW</div>
+                <div class="tab" onclick="switchTab('aba')">ABA</div>
+            </div>
+
+            <!-- AlipayBlue Tab -->
+            <div id="alipay-blue-content" class="tab-content" style="display: none;">
+                <div class="form-group">
+                    <label>金额</label>
+                    <input type="text" id="alipay-blue-amount" placeholder="输入金额" value="13500.00">
+                </div>
+
+                <div class="form-group">
+                    <label>名字</label>
+                    <div class="name-combo-wrapper" style="position: relative;">
+                        <input type="text" id="alipay-blue-nameInput" placeholder="输入或选择名字">
+                        <button type="button" class="dropdown-toggle-btn" onclick="toggleAlipayBlueNameDropdown()" title="选择名字">▼</button>
+                        <div id="alipay-blue-nameSelect" class="name-select-dropdown" style="display: none; position: absolute; width: 100%; top: 100%; left: 0; right: 0; max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; background: white; z-index: 1001; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: -4px;">
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('R.VUTHY')">R.VUTHY</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('柯旺 (Ko Wang)')">柯旺 (Ko Wang)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SEREYNATEAY')">SEREYNATEAY</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('张伟 (Zhang Wei)')">张伟 (Zhang Wei)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('李明 (Li Ming)')">李明 (Li Ming)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('王小明')">王小明</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('刘志强')">刘志强</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('陈思语')">陈思语</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SOKHEARY')">SOKHEARY</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('RITHYCHHIV')">RITHYCHHIV</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('郑琪文')">郑琪文</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('周杰龙')">周杰龙</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('DARA LONG')">DARA LONG</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('林俊杰 (Lin Junxiong)')">林俊杰 (Lin Junxiong)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('MONYNEATH')">MONYNEATH</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('黄子韬 (Huang Zitao)')">黄子韬 (Huang Zitao)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('THOEURITH')">THOEURITH</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('钱枫 (Qian Feng)')">钱枫 (Qian Feng)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('VISAL KHEM')">VISAL KHEM</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('宋仲基 (Song Joong-ki)')">宋仲基 (Song Joong-ki)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('CHAN MALIS')">CHAN MALIS</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('古力娜扎 (Gulnazar)')">古力娜扎 (Gulnazar)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SOPHEA POEUN')">SOPHEA POEUN</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('范冰冰 (Fan Bingbing)')">范冰冰 (Fan Bingbing)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('KIMLY YOURS')">KIMLY YOURS</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('王昭君 (Wang Zhaojun)')">王昭君 (Wang Zhaojun)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SETHULYA PHONE')">SETHULYA PHONE</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('李晨 (Li Chen)')">李晨 (Li Chen)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('PONGSATHORN')">PONGSATHORN</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('杨幂 (Yang Mi)')">杨幂 (Yang Mi)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SOPHEAK SAMBO')">SOPHEAK SAMBO</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('刘诗诗 (Liu Shishi)')">刘诗诗 (Liu Shishi)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SREYLEAK TAN')">SREYLEAK TAN</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('迪丽热巴 (Dilreba)')">迪丽热巴 (Dilreba)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('VIREAK CHAMNAN')">VIREAK CHAMNAN</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('佟丽娅 (Tong Liya)')">佟丽娅 (Tong Liya)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SOKCHEA RON')">SOKCHEA RON</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('唐嫣 (Tang Yan)')">唐嫣 (Tang Yan)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('THOM RITH')">THOM RITH</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('景甜 (Jing Tian)')">景甜 (Jing Tian)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('CHEA SOKUN')">CHEA SOKUN</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('林心如 (Lin Xinru)')">林心如 (Lin Xinru)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('RITH SOKHA')">RITH SOKHA</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('高圆圆 (Gao Yuanyuan)')">高圆圆 (Gao Yuanyuan)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('MOCH SREYMOM')">MOCH SREYMOM</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('陈乔恩 (Chen Qiaooen)')">陈乔恩 (Chen Qiaooen)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('THARITH LEA')">THARITH LEA</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('舒淇 (Shu Qi)')">舒淇 (Shu Qi)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('KUNTHY SOKHOM')">KUNTHY SOKHOM</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('周迅 (Zhou Xun)')">周迅 (Zhou Xun)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('PHALLIN THEA')">PHALLIN THEA</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('张静初 (Zhang Jingchu)')">张静初 (Zhang Jingchu)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SOK RATANA')">SOK RATANA</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('海清 (Hai Qing)')">海清 (Hai Qing)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('CHANROTH YUN')">CHANROTH YUN</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('袁泉 (Yuan Quan)')">袁泉 (Yuan Quan)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SAMBO LEAKPROM')">SAMBO LEAKPROM</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('伊能静 (Yi Nengjing)')">伊能静 (Yi Nengjing)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('THY SOVANNARA')">THY SOVANNARA</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('薛之谦 (Xue Zhiqian)')">薛之谦 (Xue Zhiqian)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('PISEY MONIN')">PISEY MONIN</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('华晨宇 (Hua Chenyu)')">华晨宇 (Hua Chenyu)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SOREA PHNOM')">SOREA PHNOM</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('张艺兴 (Zhang Yixing)')">张艺兴 (Zhang Yixing)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('VIRAKCHEA MENG')">VIRAKCHEA MENG</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('鹿晗 (Lu Han)')">鹿晗 (Lu Han)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('SOKUN CHAMNAN')">SOKUN CHAMNAN</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('朴灿烈 (Park Chanyeol)')">朴灿烈 (Park Chanyeol)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('TREY SAMBOAH')">TREY SAMBOAH</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('吴亦凡 (Wu Yifan)')">吴亦凡 (Wu Yifan)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('CHANPEA VANNY')">CHANPEA VANNY</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('黄晓明 (Huang Xiaoming)')">黄晓明 (Huang Xiaoming)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('MALY THARITH')">MALY THARITH</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('陈伟霆 (Chen Weiting)')">陈伟霆 (Chen Weiting)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('LEAKPROM THY')">LEAKPROM THY</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('井柏然 (Jing Boran)')">井柏然 (Jing Boran)</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('VANNA SOPHEAK')">VANNA SOPHEAK</div>
+                            <div class="dropdown-item" onclick="selectAlipayBlueNameOption('余文乐 (Yu Wenle)')">余文乐 (Yu Wenle)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <button class="btn btn-random" style="flex: 1;" onclick="setRandomAlipayBlueAmount()">随机金额</button>
+                    <button class="btn btn-random" style="flex: 1;" onclick="setRandomAlipayBlueName()">随机名字</button>
+                </div>
+            </div>
+
+            <!-- Imtoken Tab -->
+            <div id="imtoken-content" class="tab-content" style="display: none;">
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="text" id="imtoken-amount" placeholder="e.g., 105 USDT" value="105 USDT">
+                </div>
+                <div class="form-group">
+                    <label>From Address</label>
+                    <input type="text" id="imtoken-from-addr" placeholder="TRON address" value="TGjgVNapDCux...E3ghPKvqdmtw2">
+                    <button class="btn btn-random" style="margin-top: 8px;" onclick="generateRandomTronAddress('imtoken-from-addr')">Random Address</button>
+                </div>
+                <div class="form-group">
+                    <label>To Address</label>
+                    <input type="text" id="imtoken-to-addr" placeholder="TRON address" value="TXdFseTQAX...q9jxC6Ca">
+                    <button class="btn btn-random" style="margin-top: 8px;" onclick="generateRandomTronAddress('imtoken-to-addr')">Random Address</button>
+                </div>
+            </div>
+
+            <!-- AlipayW Tab -->
+            <div id="alipay-w-content" class="tab-content active">
+                <div class="form-group">
+                    <label>金额</label>
+                    <input type="text" id="alipay-w-amount" placeholder="输入金额" value="100.00">
+                </div>
+
+                <div class="form-group">
+                    <label>名字</label>
+                    <div class="name-combo-wrapper" style="position: relative;">
+                        <input type="text" id="alipay-w-nameInput" placeholder="输入或选择名字">
+                        <button type="button" class="dropdown-toggle-btn" onclick="toggleAlipayWNameDropdown()" title="选择名字">▼</button>
+                        <div id="alipay-w-nameSelect" class="name-select-dropdown" style="display: none; position: absolute; width: 100%; top: 100%; left: 0; right: 0; max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; background: white; z-index: 1001; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: -4px;">
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('R.VUTHY')">R.VUTHY</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('柯旺 (Ko Wang)')">柯旺 (Ko Wang)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SEREYNATEAY')">SEREYNATEAY</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('张伟 (Zhang Wei)')">张伟 (Zhang Wei)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('李明 (Li Ming)')">李明 (Li Ming)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('王小明')">王小明</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('刘志强')">刘志强</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('陈思语')">陈思语</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SOKHEARY')">SOKHEARY</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('RITHYCHHIV')">RITHYCHHIV</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('郑琪文')">郑琪文</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('周杰龙')">周杰龙</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('DARA LONG')">DARA LONG</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('林俊杰 (Lin Junxiong)')">林俊杰 (Lin Junxiong)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('MONYNEATH')">MONYNEATH</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('黄子韬 (Huang Zitao)')">黄子韬 (Huang Zitao)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('THOEURITH')">THOEURITH</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('钱枫 (Qian Feng)')">钱枫 (Qian Feng)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('VISAL KHEM')">VISAL KHEM</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('宋仲基 (Song Joong-ki)')">宋仲基 (Song Joong-ki)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('CHAN MALIS')">CHAN MALIS</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('古力娜扎 (Gulnazar)')">古力娜扎 (Gulnazar)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SOPHEA POEUN')">SOPHEA POEUN</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('范冰冰 (Fan Bingbing)')">范冰冰 (Fan Bingbing)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('KIMLY YOURS')">KIMLY YOURS</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('王昭君 (Wang Zhaojun)')">王昭君 (Wang Zhaojun)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SETHULYA PHONE')">SETHULYA PHONE</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('李晨 (Li Chen)')">李晨 (Li Chen)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('PONGSATHORN')">PONGSATHORN</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('杨幂 (Yang Mi)')">杨幂 (Yang Mi)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SOPHEAK SAMBO')">SOPHEAK SAMBO</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('刘诗诗 (Liu Shishi)')">刘诗诗 (Liu Shishi)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SREYLEAK TAN')">SREYLEAK TAN</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('迪丽热巴 (Dilreba)')">迪丽热巴 (Dilreba)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('VIREAK CHAMNAN')">VIREAK CHAMNAN</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('佟丽娅 (Tong Liya)')">佟丽娅 (Tong Liya)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SOKCHEA RON')">SOKCHEA RON</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('唐嫣 (Tang Yan)')">唐嫣 (Tang Yan)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('THOM RITH')">THOM RITH</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('景甜 (Jing Tian)')">景甜 (Jing Tian)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('CHEA SOKUN')">CHEA SOKUN</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('林心如 (Lin Xinru)')">林心如 (Lin Xinru)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('RITH SOKHA')">RITH SOKHA</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('高圆圆 (Gao Yuanyuan)')">高圆圆 (Gao Yuanyuan)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('MOCH SREYMOM')">MOCH SREYMOM</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('陈乔恩 (Chen Qiaooen)')">陈乔恩 (Chen Qiaooen)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('THARITH LEA')">THARITH LEA</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('舒淇 (Shu Qi)')">舒淇 (Shu Qi)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('KUNTHY SOKHOM')">KUNTHY SOKHOM</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('周迅 (Zhou Xun)')">周迅 (Zhou Xun)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('PHALLIN THEA')">PHALLIN THEA</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('张静初 (Zhang Jingchu)')">张静初 (Zhang Jingchu)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SOK RATANA')">SOK RATANA</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('海清 (Hai Qing)')">海清 (Hai Qing)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('CHANROTH YUN')">CHANROTH YUN</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('袁泉 (Yuan Quan)')">袁泉 (Yuan Quan)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SAMBO LEAKPROM')">SAMBO LEAKPROM</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('伊能静 (Yi Nengjing)')">伊能静 (Yi Nengjing)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('THY SOVANNARA')">THY SOVANNARA</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('薛之谦 (Xue Zhiqian)')">薛之谦 (Xue Zhiqian)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('PISEY MONIN')">PISEY MONIN</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('华晨宇 (Hua Chenyu)')">华晨宇 (Hua Chenyu)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SOREA PHNOM')">SOREA PHNOM</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('张艺兴 (Zhang Yixing)')">张艺兴 (Zhang Yixing)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('VIRAKCHEA MENG')">VIRAKCHEA MENG</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('鹿晗 (Lu Han)')">鹿晗 (Lu Han)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('SOKUN CHAMNAN')">SOKUN CHAMNAN</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('朴灿烈 (Park Chanyeol)')">朴灿烈 (Park Chanyeol)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('TREY SAMBOAH')">TREY SAMBOAH</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('吴亦凡 (Wu Yifan)')">吴亦凡 (Wu Yifan)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('CHANPEA VANNY')">CHANPEA VANNY</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('黄晓明 (Huang Xiaoming)')">黄晓明 (Huang Xiaoming)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('MALY THARITH')">MALY THARITH</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('陈伟霆 (Chen Weiting)')">陈伟霆 (Chen Weiting)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('LEAKPROM THY')">LEAKPROM THY</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('井柏然 (Jing Boran)')">井柏然 (Jing Boran)</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('VANNA SOPHEAK')">VANNA SOPHEAK</div>
+                            <div class="dropdown-item" onclick="selectAlipayWNameOption('余文乐 (Yu Wenle)')">余文乐 (Yu Wenle)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <button class="btn btn-random" style="flex: 1;" onclick="setRandomAlipayWAmount()">随机金额</button>
+                    <button class="btn btn-random" style="flex: 1;" onclick="setRandomAlipayWName()">随机名字</button>
+                </div>
+            </div>
+
+            <!-- ABA Tab -->
+            <div id="aba-content" class="tab-content" style="display: none;">
+                <div style="padding: 40px 20px; text-align: center; color: #999;">
+                    <p>ABA Configuration</p>
+                    <p style="font-size: 12px; color: #ccc; margin-top: 10px;">Coming soon...</p>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="saveConfiguration()">Save</button>
+                <button class="btn btn-secondary" onclick="closeConfigModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 80 names array
+        const names = [
+            'R.VUTHY', '柯旺 (Ko Wang)', 'SEREYNATEAY', '张伟 (Zhang Wei)', '李明 (Li Ming)',
+            '王小明', '刘志强', '陈思语', 'SOKHEARY', 'RITHYCHHIV', '郑琪文', '周杰龙',
+            'DARA LONG', '林俊杰 (Lin Junxiong)', 'MONYNEATH', '黄子韬 (Huang Zitao)',
+            'THOEURITH', '钱枫 (Qian Feng)', 'VISAL KHEM', '宋仲基 (Song Joong-ki)',
+            'CHAN MALIS', '古力娜扎 (Gulnazar)', 'SOPHEA POEUN', '范冰冰 (Fan Bingbing)',
+            'KIMLY YOURS', '王昭君 (Wang Zhaojun)', 'SETHULYA PHONE', '李晨 (Li Chen)',
+            'PONGSATHORN', '杨幂 (Yang Mi)', 'SOPHEAK SAMBO', '刘诗诗 (Liu Shishi)',
+            'SREYLEAK TAN', '迪丽热巴 (Dilreba)', 'VIREAK CHAMNAN', '佟丽娅 (Tong Liya)',
+            'SOKCHEA RON', '唐嫣 (Tang Yan)', 'THOM RITH', '景甜 (Jing Tian)',
+            'CHEA SOKUN', '林心如 (Lin Xinru)', 'RITH SOKHA', '高圆圆 (Gao Yuanyuan)',
+            'MOCH SREYMOM', '陈乔恩 (Chen Qiaooen)', 'THARITH LEA', '舒淇 (Shu Qi)',
+            'KUNTHY SOKHOM', '周迅 (Zhou Xun)', 'PHALLIN THEA', '张静初 (Zhang Jingchu)',
+            'SOK RATANA', '海清 (Hai Qing)', 'CHANROTH YUN', '袁泉 (Yuan Quan)',
+            'SAMBO LEAKPROM', '伊能静 (Yi Nengjing)', 'THY SOVANNARA', '薛之谦 (Xue Zhiqian)',
+            'PISEY MONIN', '华晨宇 (Hua Chenyu)', 'SOREA PHNOM', '张艺兴 (Zhang Yixing)',
+            'VIRAKCHEA MENG', '鹿晗 (Lu Han)', 'SOKUN CHAMNAN', '朴灿烈 (Park Chanyeol)',
+            'TREY SAMBOAH', '吴亦凡 (Wu Yifan)', 'CHANPEA VANNY', '黄晓明 (Huang Xiaoming)',
+            'MALY THARITH', '陈伟霆 (Chen Weiting)', 'LEAKPROM THY', '井柏然 (Jing Boran)',
+            'VANNA SOPHEAK', '余文乐 (Yu Wenle)'
+        ];
+
+        let currentActiveTab = 'alipay-w';
+
+        // Configuration storage
+        let config = {
+            'alipay-blue': {
+                amount: '13500.00',
+                name: ''
+            },
+            'imtoken': {
+                amount: '105 USDT',
+                fromAddr: 'TGjgVNapDCux...E3ghPKvqdmtw2',
+                toAddr: 'TXdFseTQAX...q9jxC6Ca'
+            },
+            'alipay-w': {
+                amount: '100.00',
+                name: ''
+            },
+            'aba': {}
+        };
+
+        function openSettingsModal() {
+            document.getElementById('configModal').style.display = 'block';
+            loadConfiguration();
+        }
+
+        function closeConfigModal() {
+            const modal = document.getElementById('configModal');
+            modal.style.display = 'none';
+            // Close all dropdowns
+            const alipayBlueDropdown = document.getElementById('alipay-blue-nameSelect');
+            const alipayWDropdown = document.getElementById('alipay-w-nameSelect');
+            if (alipayBlueDropdown) alipayBlueDropdown.style.display = 'none';
+            if (alipayWDropdown) alipayWDropdown.style.display = 'none';
+        }
+
+        function loadConfiguration() {
+            try {
+                // Load AlipayBlue
+                const alipayBlueAmount = document.getElementById('alipay-blue-amount');
+                const alipayBlueName = document.getElementById('alipay-blue-nameInput');
+                if (alipayBlueAmount) alipayBlueAmount.value = config['alipay-blue'].amount;
+                if (alipayBlueName) alipayBlueName.value = config['alipay-blue'].name || '';
+
+                // Load Imtoken
+                const imtokenAmount = document.getElementById('imtoken-amount');
+                const imtokenFromAddr = document.getElementById('imtoken-from-addr');
+                const imtokenToAddr = document.getElementById('imtoken-to-addr');
+                if (imtokenAmount) imtokenAmount.value = config['imtoken'].amount;
+                if (imtokenFromAddr) imtokenFromAddr.value = config['imtoken'].fromAddr;
+                if (imtokenToAddr) imtokenToAddr.value = config['imtoken'].toAddr;
+
+                // Load AlipayW
+                const alipayWAmount = document.getElementById('alipay-w-amount');
+                const alipayWName = document.getElementById('alipay-w-nameInput');
+                if (alipayWAmount) alipayWAmount.value = config['alipay-w'].amount;
+                if (alipayWName) alipayWName.value = config['alipay-w'].name || '';
+            } catch (error) {
+                console.error('Error loading configuration:', error);
+            }
+        }
+
+        function switchTab(tabName) {
+            currentActiveTab = tabName;
+            
+            // Hide all tab contents and remove active class
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content with active class
+            const selectedContent = document.getElementById(tabName + '-content');
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
+            
+            // Add active class to selected tab
+            event.target.classList.add('active');
+        }
+
+        function toggleAlipayBlueNameDropdown() {
+            const dropdown = document.getElementById('alipay-blue-nameSelect');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleAlipayWNameDropdown() {
+            const dropdown = document.getElementById('alipay-w-nameSelect');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function selectAlipayBlueNameOption(name) {
+            document.getElementById('alipay-blue-nameInput').value = name;
+            document.getElementById('alipay-blue-nameSelect').style.display = 'none';
+        }
+
+        function selectAlipayWNameOption(name) {
+            document.getElementById('alipay-w-nameInput').value = name;
+            document.getElementById('alipay-w-nameSelect').style.display = 'none';
+        }
+
+        function generateRandomTronAddress(fieldId) {
+            const randomAddress = 'T' + Array.from({length: 33}, () => 
+                '0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'[Math.floor(Math.random() * 57)]
+            ).join('');
+            document.getElementById(fieldId).value = randomAddress;
+        }
+
+        function setRandomAlipayBlueAmount() {
+            const randomAmount = (Math.floor(Math.random() * 99000) + 1000).toFixed(2);
+            document.getElementById('alipay-blue-amount').value = randomAmount;
+        }
+
+        function setRandomAlipayBlueName() {
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            document.getElementById('alipay-blue-nameInput').value = randomName;
+        }
+
+        function setRandomAlipayWAmount() {
+            const randomAmount = (Math.floor(Math.random() * 99000) + 1000).toFixed(2);
+            document.getElementById('alipay-w-amount').value = randomAmount;
+        }
+
+        function setRandomAlipayWName() {
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            document.getElementById('alipay-w-nameInput').value = randomName;
+        }
+
+        function saveConfiguration() {
+            try {
+                // Save all tab values to config
+                config['alipay-blue'].amount = document.getElementById('alipay-blue-amount').value;
+                config['alipay-blue'].name = document.getElementById('alipay-blue-nameInput').value;
+                
+                config['imtoken'].amount = document.getElementById('imtoken-amount').value;
+                config['imtoken'].fromAddr = document.getElementById('imtoken-from-addr').value;
+                config['imtoken'].toAddr = document.getElementById('imtoken-to-addr').value;
+                
+                config['alipay-w'].amount = document.getElementById('alipay-w-amount').value;
+                config['alipay-w'].name = document.getElementById('alipay-w-nameInput').value;
+                
+                closeConfigModal();
+                updateInterfaceDisplay();
+            } catch (error) {
+                console.error('Error saving configuration:', error);
+                alert('Error saving configuration. Please check the browser console.');
+            }
+        }
+
+        function updateInterfaceDisplay() {
+            // Navigate or update based on which config was edited
+            if (currentActiveTab === 'alipay-blue') {
+                window.location.href = 'index.html';
+            } else if (currentActiveTab === 'imtoken') {
+                window.location.href = 'imtoken.html';
+            } else if (currentActiveTab === 'alipay-w') {
+                // Stay on alipayw.html and update the display
+                document.getElementById('displayAmount').textContent = config['alipay-w'].amount;
+                document.getElementById('displayName').textContent = config['alipay-w'].name;
+            } else if (currentActiveTab === 'aba') {
+                window.location.href = 'aba.html';
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const alipayBlueDropdown = document.getElementById('alipay-blue-nameSelect');
+            const alipayWDropdown = document.getElementById('alipay-w-nameSelect');
+            const alipayBlueWrapper = document.querySelector('.name-combo-wrapper');
+            
+            if (alipayBlueWrapper && !alipayBlueWrapper.contains(event.target)) {
+                if (alipayBlueDropdown) alipayBlueDropdown.style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('configModal');
+            if (event.target === modal) {
+                closeConfigModal();
+            }
+        }
+
+        // Initialize with random name on page load
+        window.addEventListener('load', function() {
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            document.getElementById('displayName').textContent = randomName;
+        });
+    </script>
+</body>
+</html>
